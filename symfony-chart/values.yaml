@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: my-symfony-app
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  name: symfony
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: symfony.local
+      paths: ["/"]
+  tls: []
+
+resources: {}

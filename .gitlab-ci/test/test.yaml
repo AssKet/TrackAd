@@ -1,0 +1,14 @@
+stages:
+  - test
+
+include:
+  - local: .gitlab-ci/reference/test.yaml
+
+test:
+  stage: test
+  image: php:8.1-cli
+  services:
+    - name: mysql:5.7
+      alias: db
+  script:
+    - !reference [ .test ]

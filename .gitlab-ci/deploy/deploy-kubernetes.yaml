@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+include:
+  - local: .gitlab-ci/reference/deploy-kubernetes.yaml
+  - local: .gitlab-ci/reference/kube-config.yaml
+
+deploy:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  before_script:
+    - !reference [ .kube-config ]
+  script:
+    - !reference [ .deploy-kubernetes ]
+  only:
+    - main

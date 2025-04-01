@@ -1,0 +1,17 @@
+stages:
+  - build
+
+include:
+  - local: .gitlab-ci/build/reference/build-and-push.yaml
+
+build:
+  stage: build
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+  script:
+    - !reference [ .build-and-push ]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - Dockerfile

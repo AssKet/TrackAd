@@ -1,0 +1,6 @@
+.deploy-kubernetes:
+  - kubectl config use-context "$KUBE_CONTEXT"
+  - kubectl create namespace "$KUBE_NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+  - helm upgrade --install symfony ./helm-chart --namespace "$KUBE_NAMESPACE" \
+        --set image.repository="$IMAGE_NAME" \
+        --set image.tag="$IMAGE_TAG"

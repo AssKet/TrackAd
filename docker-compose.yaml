@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  symfony:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: symfony_app
+    ports:
+      - "9000:9000"
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=mysql://symfony:symfony@db:3306/symfony
+    volumes:
+      - .:/var/www
+      - ./var:/var/www/var
+    networks:
+      - symfony_net
+    depends_on:
+      - db
+    command: php-fpm
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - symfony_net
+
+networks:
+  symfony_net:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: symfony
+  labels:
+    app: symfony
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: symfony
+  template:
+    metadata:
+      labels:
+        app: symfony
+    spec:
+      containers:
+        - name: symfony
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 9000
+          env:
+            - name: DATABASE_URL
+              value: "mysql://symfony:symfony@mysql:3306/symfony"
+          volumeMounts:
+            - name: symfony-volume
+              mountPath: /var/www
+
+      volumes:
+        - name: symfony-volume
+          persistentVolumeClaim:
+            claimName: symfony-pvc
