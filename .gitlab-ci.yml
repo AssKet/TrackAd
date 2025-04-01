@@ -7,9 +7,3 @@ include:
   - local: .gitlab-ci/build/docker-build.yaml
   - local: .gitlab-ci/deploy/deploy-kubernetes.yaml
   - local: .gitlab-ci/test/test.yaml
-
-variables:
-  IMAGE_NAME: "$CI_REGISTRY_IMAGE/symfony-app"
-  IMAGE_TAG: "$CI_COMMIT_REF_SLUG"
-  KUBE_NAMESPACE: "symfony"
-  KUBE_CONTEXT: "k8s-cluster"
